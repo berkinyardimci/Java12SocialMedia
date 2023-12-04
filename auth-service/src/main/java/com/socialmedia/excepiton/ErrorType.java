@@ -12,7 +12,18 @@ public enum ErrorType {
 
     EMAIL_EXITS(2100, "Email Kullanılıyor",HttpStatus.BAD_REQUEST),
 
-    PASSWORD_MISMATCH(2200, "Şifreler Uyuşmuyor",HttpStatus.BAD_REQUEST);
+    PASSWORD_MISMATCH(2200, "Şifreler Uyuşmuyor",HttpStatus.BAD_REQUEST),
+
+    PARAMETER_NOT_VALID(5000,"Parametre Hatası",HttpStatus.BAD_REQUEST),
+
+    USER_NOT_FOUND(3000,"Email ve ya Şifre hatalı veya Eksik",HttpStatus.NOT_FOUND),
+
+    ACCOUNT_NOT_ACTIVE(3001,"Hesabınız Aktif Değil" ,HttpStatus.FORBIDDEN),
+
+    ACTIVATION_CODE_MISMATCH(3002,"Aktivasyon Kodu Hatalı" , HttpStatus.BAD_REQUEST),
+
+    USER_ALREADY_DELETED(3003,"Hesap Zaten Dilinmiş" ,HttpStatus.BAD_REQUEST );
+
 
 
     private int code;
