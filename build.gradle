@@ -47,6 +47,8 @@ allprojects {
         annotationProcessor libs.mapStructProcessor
         implementation libs.springBootValidation
         implementation libs.swagger
+        implementation libs.javaJwt
+        implementation libs.springCloudOpenFeign
     }
 
 }

@@ -1,6 +1,8 @@
 package com.socialmedia.mapper;
 
+import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.dto.response.LoginResponse;
+import com.socialmedia.dto.response.RegisterResponse;
 import com.socialmedia.entity.Auth;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,4 +16,9 @@ public interface IAuthMapper {
 
 
     LoginResponse toLoginResponse(Auth auth);
+
+    @Mapping(source = "id", target = "authId")
+    UserSaveRequestDto toUserSaveRequestDto(Auth auth);
+
+    RegisterResponse toRegisterResponse(Auth auth);
 }

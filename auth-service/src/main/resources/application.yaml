@@ -13,4 +13,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-
+jwt:
+  secretKey: ${java12secret}
+  issuer: ${java12issuer}

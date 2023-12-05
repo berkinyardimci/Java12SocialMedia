@@ -12,3 +12,7 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+
+jwt:
+  secretKey: ${java12secret}
+  issuer: ${java12issuer}

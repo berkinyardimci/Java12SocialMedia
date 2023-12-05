@@ -23,10 +23,13 @@ import com.socialmedia.dto.request.ActivateCodeRequest;
 import com.socialmedia.dto.request.LoginRequestDto;
 import com.socialmedia.dto.request.RegisterRequestDto;
 import com.socialmedia.dto.response.LoginResponse;
+import com.socialmedia.dto.response.RegisterResponse;
 import com.socialmedia.entity.Auth;
+import com.socialmedia.entity.enums.ERole;
 import com.socialmedia.excepiton.AuthManagerException;
 import com.socialmedia.excepiton.ErrorType;
 import com.socialmedia.service.AuthService;
+import com.socialmedia.util.JWTTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +43,10 @@ public class AuthController {
 
 
     private final AuthService authService;
+    private final JWTTokenManager tokenManager;
 
     @PostMapping("/register")
-    public ResponseEntity<Auth> register(@RequestBody @Valid RegisterRequestDto request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterRequestDto request) {
             if (!request.getPassword().equals(request.getRePassword())) {
                 throw new AuthManagerException(ErrorType.PASSWORD_MISMATCH);
             }
@@ -50,7 +54,7 @@ public class AuthController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
@@ -62,6 +66,21 @@ public class AuthController {
     @DeleteMapping("/delete{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long authId) {
         return ResponseEntity.ok(authService.softDelete(authId));
+    }
+
+    @GetMapping("/getToken")
+    public ResponseEntity<String> getToken(Long id){
+        return ResponseEntity.ok(tokenManager.createToken(id).get());
+    }
+
+    @GetMapping("/getIdfromtoken")
+    public ResponseEntity<Long> getIdFromToken(String token){
+        return ResponseEntity.ok(tokenManager.getIdFromToken(token).get());
+    }
+
+    @GetMapping("/getRolefromtoken")
+    public ResponseEntity<String> getRoleFromToken(String token){
+        return ResponseEntity.ok(tokenManager.getRoleFromToken(token).get());
     }
 
 }
