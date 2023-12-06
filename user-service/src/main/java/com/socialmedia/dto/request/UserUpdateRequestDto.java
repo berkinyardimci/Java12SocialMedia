@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateUserProfileRequestDto {
+public class UserUpdateRequestDto {
 
     private String token;
     @NotBlank(message = "Kullanıcı adı boş geçilemez")

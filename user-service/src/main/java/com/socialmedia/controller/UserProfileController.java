@@ -1,7 +1,6 @@
 package com.socialmedia.controller;
 
-import com.socialmedia.dto.request.UpdateRequestDto;
-import com.socialmedia.dto.request.UpdateUserProfileRequestDto;
+import com.socialmedia.dto.request.UserUpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class UserProfileController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody @Valid UpdateUserProfileRequestDto dto){
+    public ResponseEntity<String> update(@RequestBody @Valid UserUpdateRequestDto dto){
         return  ResponseEntity.ok(userProfileService.updateUserProfile(dto));
     }
 }

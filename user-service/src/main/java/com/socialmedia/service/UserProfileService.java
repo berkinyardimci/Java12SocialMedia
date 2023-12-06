@@ -1,6 +1,6 @@
 package com.socialmedia.service;
 
-import com.socialmedia.dto.request.UpdateUserProfileRequestDto;
+import com.socialmedia.dto.request.UserUpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.entity.UserProfile;
 import com.socialmedia.entity.enums.EStatus;
@@ -46,29 +46,27 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         return "Hesap başarıyla aktive edilmiştir";
     }
 
-    public String updateUserProfile(UpdateUserProfileRequestDto dto) {
+    public String updateUserProfile(UserUpdateRequestDto dto) {
         Optional<Long> authId = tokenManager.getIdFromToken(dto.getToken());
         if (authId.isEmpty()) {
             throw new UserManagerException(ErrorType.INVALID_TOKEN);
         }
-        Optional<UserProfile> userProfile = userRepository.findByAuthId(authId.get());
-        if (userProfile.isEmpty()) {
-            throw new UserManagerException(ErrorType.USER_NOT_FOUND);
-        }
-        if (!userProfile.get().getEmail().equals(dto.getEmail()) ||
-                !userProfile.get().getUsername().equals(dto.getUsername())) {
-            userProfile.get().setEmail(dto.getEmail());
-            userProfile.get().setUsername(dto.getUsername());
+        Optional<UserProfile> optionalUserProfile = userRepository.findByAuthId(authId.get());
+        UserProfile userProfile = optionalUserProfile.orElseThrow(() -> new UserManagerException(ErrorType.USER_NOT_FOUND));
 
-            authManager.update(IUserMapper.INSTANCE.toUpdateRequestDto(userProfile.get()));
+
+        //emailini değiştir miyorsa servise istek atmasın
+        if (!userProfile.getEmail().equals(dto.getEmail())) {
+            userProfile.setEmail(dto.getEmail());
+            authManager.update(IUserMapper.INSTANCE.toUpdateRequestDto(userProfile));
         }
 
-        userProfile.get().setAvatar(dto.getAvatar());
-        userProfile.get().setAbout(dto.getAbout());
-        userProfile.get().setPhone(dto.getPhone());
-        userProfile.get().setAddress(dto.getAddress());
-        update(userProfile.get());
-        return "Guncelleme başarılı";
+        userProfile.setAbout(dto.getAbout() == null ? userProfile.getAbout() : dto.getAbout());
+        userProfile.setAddress(dto.getAddress() == null ? userProfile.getAddress() : dto.getAddress());
+        userProfile.setPhone(dto.getPhone() == null ? userProfile.getPhone() : dto.getPhone());
+        userProfile.setAvatar(dto.getAvatar() == null ? userProfile.getAvatar() : dto.getAvatar());
 
+        update(userProfile);
+        return "Güncelleme Başarılı";
     }
 }
