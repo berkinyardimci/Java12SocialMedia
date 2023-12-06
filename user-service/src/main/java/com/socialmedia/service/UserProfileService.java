@@ -66,6 +66,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         userProfile.setPhone(dto.getPhone() == null ? userProfile.getPhone() : dto.getPhone());
         userProfile.setAvatar(dto.getAvatar() == null ? userProfile.getAvatar() : dto.getAvatar());
 
+
         update(userProfile);
         return "Güncelleme Başarılı";
     }
