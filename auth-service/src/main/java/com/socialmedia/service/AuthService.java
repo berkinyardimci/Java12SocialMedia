@@ -3,6 +3,7 @@ package com.socialmedia.service;
 import com.socialmedia.dto.request.ActivateCodeRequest;
 import com.socialmedia.dto.request.LoginRequestDto;
 import com.socialmedia.dto.request.RegisterRequestDto;
+import com.socialmedia.dto.request.UpdateRequestDto;
 import com.socialmedia.dto.response.RegisterResponse;
 import com.socialmedia.entity.Auth;
 import com.socialmedia.entity.enums.EStatus;
@@ -90,6 +91,7 @@ public class AuthService extends ServiceManager<Auth,Long> {
             case PENDING -> {
                 auth.setStatus(EStatus.ACTIVE);
                 update(auth);
+                userManager.activateUser(auth.getId());
                 return "Aktivasyon Başarılı";
             }
             case BANNED -> {
@@ -108,7 +110,6 @@ public class AuthService extends ServiceManager<Auth,Long> {
         Optional<Auth> optionalAuth = findById(id);
         if(optionalAuth.isEmpty()){
 
-            //Todo: USER_NOT_FOUND mesajı değişcek
             throw new AuthManagerException(ErrorType.USER_NOT_FOUND);
         }
         if(!optionalAuth.get().getStatus().equals(EStatus.DELETED)){
@@ -120,21 +121,18 @@ public class AuthService extends ServiceManager<Auth,Long> {
         }
     }
 
-    /*
-    public String activeStatus(ActivateCodeRequest dto) {
-        Optional<Auth> optionalAuth = authRepository.findByIdAndActivationCode(dto.getId(), dto.getActivationCode());
-        if (optionalAuth.isPresent()){
-            if (optionalAuth.get().getStatus().equals(EStatus.PENDING)){
-                optionalAuth.get().setStatus(EStatus.ACTIVE);
-                authRepository.save(optionalAuth.get());
-                return "Aktivasyon başarılı";
-            }
-            //mesaj kısmı dinamik geliyor gelen
-            //optionalAuth.get().getStatus().name() satırından kullanıcın satutusune göre hata mesajı değişiyor.
-            throw new AuthServiceException(ErrorType.STATUS_NOT_SUITABLE, ErrorType.STATUS_NOT_SUITABLE.getMessage() + optionalAuth.get().getStatus().name());
+    public String updateAuth(UpdateRequestDto dto) {
+        Optional<Auth> auth=findById(dto.getId());
+        if (auth.isEmpty()){
+            throw  new AuthManagerException((ErrorType.USER_NOT_FOUND));
         }
-        throw new AuthServiceException(ErrorType.USER_NOT_FOUND);
-    }
-     */
+        if(!auth.get().getUsername().equals(dto.getUsername()) && authRepository.existsByUsername(dto.getUsername())){
+            throw new AuthManagerException(ErrorType.USERNAME_EXIST);
+        }
+        auth.get().setUsername(dto.getUsername());
+        auth.get().setEmail(dto.getEmail());
+        update(auth.get());
 
+        return "Guncelleme Başarılı ....";
+    }
 }

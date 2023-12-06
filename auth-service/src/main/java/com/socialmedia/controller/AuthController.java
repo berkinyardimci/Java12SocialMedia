@@ -22,6 +22,7 @@ package com.socialmedia.controller;
 import com.socialmedia.dto.request.ActivateCodeRequest;
 import com.socialmedia.dto.request.LoginRequestDto;
 import com.socialmedia.dto.request.RegisterRequestDto;
+import com.socialmedia.dto.request.UpdateRequestDto;
 import com.socialmedia.dto.response.LoginResponse;
 import com.socialmedia.dto.response.RegisterResponse;
 import com.socialmedia.entity.Auth;
@@ -66,6 +67,11 @@ public class AuthController {
     @DeleteMapping("/delete{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long authId) {
         return ResponseEntity.ok(authService.softDelete(authId));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody @Valid UpdateRequestDto dto){
+        return  ResponseEntity.ok(authService.updateAuth(dto));
     }
 
     @GetMapping("/getToken")
