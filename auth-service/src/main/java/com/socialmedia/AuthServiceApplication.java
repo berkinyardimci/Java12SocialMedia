@@ -2,6 +2,7 @@ package com.socialmedia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
@@ -19,6 +20,8 @@ public class AuthServiceApplication {
 
     //kullanıcı sil --> soft delete,
     //ENUM, boolean, 0 , 1
+
+    //auth ile user service config servere taşıyalım.
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class);

@@ -1,18 +1,9 @@
-server:
-  port: 9090
-
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/AuthDb
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-
-jwt:
-  secretKey: ${java12secret}
-  issuer: ${java12issuer}
+  cloud:
+    config:
+      uri: http://localhost:8889
+      initialize-on-context-refresh: true
+  config:
+    import: "configserver:"
+  application:
+    name: auth-service-application

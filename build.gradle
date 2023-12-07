@@ -49,8 +49,9 @@ allprojects {
         implementation libs.swagger
         implementation libs.javaJwt
         implementation libs.springCloudOpenFeign
-    }
+        implementation libs.springCloudConfigClient
 
+    }
 }
 
 configurations {

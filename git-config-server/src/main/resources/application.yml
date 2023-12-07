@@ -1,0 +1,15 @@
+server:
+  port: 8889
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/berkinyardimci/Java12Config-Repo.git"
+          default-label: main
+          skip-ssl-validation: true
+          username: berkinyardimci
+          password: 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
+
+

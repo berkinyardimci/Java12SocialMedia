@@ -1,18 +1,8 @@
-server:
-  port: 9091
-
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/UserDb
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-
-jwt:
-  secretKey: ${java12secret}
-  issuer: ${java12issuer}
+  cloud:
+    config:
+      uri: http://localhost:8889
+  config:
+    import: "configserver:"
+  application:
+    name: user-service-application
