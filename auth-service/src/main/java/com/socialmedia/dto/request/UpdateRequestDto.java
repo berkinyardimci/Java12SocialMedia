@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class UpdateRequestDto {
 
     private Long id;
-    private String username;
     private String email;
 }
