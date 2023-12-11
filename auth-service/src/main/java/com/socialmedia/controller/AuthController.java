@@ -36,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -89,4 +90,8 @@ public class AuthController {
         return ResponseEntity.ok(tokenManager.getRoleFromToken(token).get());
     }
 
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Auth>> findAll(){
+        return  ResponseEntity.ok(authService.findAll());
+    }
 }

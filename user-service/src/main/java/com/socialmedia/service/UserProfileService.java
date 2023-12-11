@@ -70,4 +70,12 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         update(userProfile);
         return "Güncelleme Başarılı";
     }
+
+    public Long getUserIdfromToken(String token) {
+        Long authId = tokenManager.getIdFromToken(token).orElseThrow(() -> new UserManagerException(ErrorType.INVALID_TOKEN));
+
+        Optional<UserProfile> optionalUserProfile = userRepository.findByAuthId(authId);
+        UserProfile userProfile = optionalUserProfile.orElseThrow(() -> new UserManagerException(ErrorType.USER_NOT_FOUND));
+        return userProfile.getId();
+    }
 }

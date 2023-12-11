@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      uri: http://localhost:8889
+      uri: http://localhost:8888
       initialize-on-context-refresh: true
   config:
     import: "configserver:"

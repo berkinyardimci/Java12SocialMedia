@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
-@FeignClient(url = "http://localhost:9091/auth", decode404 = true ,name = "user-auth")
+@FeignClient(url = "http://localhost:9090/auth", decode404 = true ,name = "user-auth")
 public interface IAuthManager {
 
 
     @PutMapping("/update")
     ResponseEntity<String> update(@RequestBody @Valid UpdateRequestDto dto);
+
+
 }
