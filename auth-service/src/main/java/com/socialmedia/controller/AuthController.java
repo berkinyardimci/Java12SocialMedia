@@ -55,6 +55,15 @@ public class AuthController {
             return ResponseEntity.ok(authService.register(request));
 
     }
+
+    @PostMapping("/registerRabbit")
+    public ResponseEntity<RegisterResponse> registerRabbit(@RequestBody @Valid RegisterRequestDto request) {
+        if (!request.getPassword().equals(request.getRePassword())) {
+            throw new AuthManagerException(ErrorType.PASSWORD_MISMATCH);
+        }
+        return ResponseEntity.ok(authService.registerWithRabbit(request));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
         return ResponseEntity.ok(authService.login(request));

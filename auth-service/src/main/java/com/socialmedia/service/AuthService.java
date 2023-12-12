@@ -11,6 +11,8 @@ import com.socialmedia.excepiton.AuthManagerException;
 import com.socialmedia.excepiton.ErrorType;
 import com.socialmedia.manager.IUserManager;
 import com.socialmedia.mapper.IAuthMapper;
+import com.socialmedia.rabbitmq.producer.ActiveStatusProducer;
+import com.socialmedia.rabbitmq.producer.RegisterProducer;
 import com.socialmedia.repository.IAuthRepository;
 import com.socialmedia.util.CodeGenerator;
 import com.socialmedia.util.JWTTokenManager;
@@ -26,12 +28,16 @@ public class AuthService extends ServiceManager<Auth,Long> {
     private final IAuthRepository authRepository;
     private final JWTTokenManager tokenManager;
     private final IUserManager userManager;
+    private final RegisterProducer registerProducer;
+    private final ActiveStatusProducer activeStatusProducer;
 
-    public AuthService(IAuthRepository authRepository, JWTTokenManager tokenManager, IUserManager userManager) {
+    public AuthService(IAuthRepository authRepository, JWTTokenManager tokenManager, IUserManager userManager, RegisterProducer registerProducer, ActiveStatusProducer activeStatusProducer) {
         super(authRepository);
         this.authRepository = authRepository;
         this.tokenManager = tokenManager;
         this.userManager = userManager;
+        this.registerProducer = registerProducer;
+        this.activeStatusProducer = activeStatusProducer;
     }
 
     @Transactional
@@ -51,6 +57,30 @@ public class AuthService extends ServiceManager<Auth,Long> {
             return IAuthMapper.INSTANCE.toRegisterResponse(auth);
         }catch (Exception e){
             throw new AuthManagerException(ErrorType.INTERNAL_ERROR_SERVER);
+        }
+    }
+
+    public RegisterResponse registerWithRabbit(RegisterRequestDto request) {
+        try {
+            if(authRepository.existsByEmail(request.getEmail())){
+                throw new AuthManagerException(ErrorType.EMAIL_EXITS);
+            }
+            Auth auth = Auth.builder()
+                    .email(request.getEmail())
+                    .password(request.getPassword())
+                    .username(request.getUsername())
+                    .activationCode(CodeGenerator.generateCode())
+                    .build();
+            authRepository.save(auth);
+
+            registerProducer.sendNewUser(IAuthMapper.INSTANCE.toRegisterModel(auth));
+            return IAuthMapper.INSTANCE.toRegisterResponse(auth);
+        }catch (Exception e){
+
+
+            System.out.println(e);
+            throw new AuthManagerException(ErrorType.INTERNAL_ERROR_SERVER);
+
         }
     }
 
@@ -91,7 +121,8 @@ public class AuthService extends ServiceManager<Auth,Long> {
             case PENDING -> {
                 auth.setStatus(EStatus.ACTIVE);
                 update(auth);
-                userManager.activateUser(auth.getId());
+                //userManager.activateUser(auth.getId());
+                activeStatusProducer.convertAndSendToRabbit(auth.getId());
                 return "Aktivasyon Başarılı";
             }
             case BANNED -> {

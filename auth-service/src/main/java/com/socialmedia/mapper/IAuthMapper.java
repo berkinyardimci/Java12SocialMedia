@@ -4,6 +4,7 @@ import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.dto.response.LoginResponse;
 import com.socialmedia.dto.response.RegisterResponse;
 import com.socialmedia.entity.Auth;
+import com.socialmedia.rabbitmq.model.RegisterModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -21,4 +22,7 @@ public interface IAuthMapper {
     UserSaveRequestDto toUserSaveRequestDto(Auth auth);
 
     RegisterResponse toRegisterResponse(Auth auth);
+
+    @Mapping(source = "id", target = "authId")
+    RegisterModel toRegisterModel(Auth auth);
 }

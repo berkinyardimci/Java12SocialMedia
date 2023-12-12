@@ -3,6 +3,7 @@ package com.socialmedia.mapper;
 import com.socialmedia.dto.request.UpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.entity.UserProfile;
+import com.socialmedia.rabbitmq.model.RegisterModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -13,10 +14,12 @@ public interface IUserMapper {
 
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
 
-    UserProfile toUserPRofile(UserSaveRequestDto dto);
+    UserProfile toUserProfile(UserSaveRequestDto dto);
+    UserProfile toUserProfile(RegisterModel registerModel);
 
     @Mapping(source = "authId", target = "id")
     UpdateRequestDto toUpdateRequestDto(UserProfile userProfile);
+
 
 
 }

@@ -8,6 +8,7 @@ import com.socialmedia.excepiton.ErrorType;
 import com.socialmedia.excepiton.UserManagerException;
 import com.socialmedia.manager.IAuthManager;
 import com.socialmedia.mapper.IUserMapper;
+import com.socialmedia.rabbitmq.model.RegisterModel;
 import com.socialmedia.repository.IUserRepository;
 import com.socialmedia.util.JWTTokenManager;
 import com.socialmedia.util.ServiceManager;
@@ -31,7 +32,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     }
 
     public Boolean createNewUser(UserSaveRequestDto dto) {
-        UserProfile userProfile = IUserMapper.INSTANCE.toUserPRofile(dto);
+        UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(dto);
         save(userProfile);
         return true;
     }
@@ -77,5 +78,11 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         Optional<UserProfile> optionalUserProfile = userRepository.findByAuthId(authId);
         UserProfile userProfile = optionalUserProfile.orElseThrow(() -> new UserManagerException(ErrorType.USER_NOT_FOUND));
         return userProfile.getId();
+    }
+
+    public void createNewUserWithRabbit(RegisterModel registerModel) {
+            UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(registerModel);
+            save(userProfile);
+            System.out.println(userProfile);
     }
 }

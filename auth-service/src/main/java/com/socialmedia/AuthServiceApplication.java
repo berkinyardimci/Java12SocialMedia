@@ -23,6 +23,8 @@ public class AuthServiceApplication {
 
     //auth ile user service config servere taşıyalım.
 
+    //rabbit mq üzerinden hesabı aktif edelim.
+
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class);
     }
