@@ -26,7 +26,10 @@ public enum ErrorType {
 
     INVALID_TOKEN(6000, "Geçersiz Token ", HttpStatus.BAD_REQUEST),
 
-    TOKEN_NOT_CREATED(6001,"Token Oluşturulamadı", HttpStatus.BAD_REQUEST);
+    TOKEN_NOT_CREATED(6001,"Token Oluşturulamadı", HttpStatus.BAD_REQUEST),
+
+    USER_NOT_FOUND_BY_STATUS(3004,"Bu statude Kullanıcı bulunmamaktadır" ,HttpStatus.NOT_FOUND),
+    INVALID_STATUS(3005, "sTATUS bULUNMADI",HttpStatus.NOT_FOUND );
 
 
 

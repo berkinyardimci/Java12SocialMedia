@@ -2,6 +2,13 @@ server:
   port: 9090
 
 spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -37,3 +44,9 @@ rabbitmq:
   active-status-queue: activeStatusQueue
   active-status-bindingKey: activeStatusBindingKey
 
+  mail-queue: mailQueue
+  mail-bindingKey: mailBindingKey
+
+##redis:
+  ##host: localhost
+  ##port: 6379

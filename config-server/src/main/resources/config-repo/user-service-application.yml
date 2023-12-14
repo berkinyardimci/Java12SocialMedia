@@ -2,6 +2,12 @@ server:
   port: 9091
 
 spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
   rabbitmq:
     host: localhost
     port: 5672

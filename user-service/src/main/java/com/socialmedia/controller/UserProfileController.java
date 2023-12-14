@@ -3,6 +3,7 @@ package com.socialmedia.controller;
 import com.socialmedia.dto.request.UserUpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.entity.UserProfile;
+import com.socialmedia.entity.enums.EStatus;
 import com.socialmedia.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,15 @@ public class UserProfileController {
     @GetMapping("/getUserIdfromToken/{token}")
     public Long getUserIdfromToken(@PathVariable String token){
         return  userProfileService.getUserIdfromToken(token);
+    }
+
+    @GetMapping("/findByUserName/{username}")
+    public ResponseEntity<UserProfile> findByUserName(@PathVariable String username){
+        return ResponseEntity.ok(userProfileService.findByUsername(username));
+    }
+
+    @GetMapping("/findbystatus")
+    public ResponseEntity<List<UserProfile>> findByStatus(@RequestParam EStatus status){
+        return ResponseEntity.ok(userProfileService.findByStatus(status));
     }
 }

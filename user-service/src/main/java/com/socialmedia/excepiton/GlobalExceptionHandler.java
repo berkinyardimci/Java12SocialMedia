@@ -27,6 +27,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(errorMessage, httpStatus);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorMessage> handleManagerException(IllegalArgumentException ex) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ErrorType errorType = ErrorType.INVALID_STATUS;
+        ErrorMessage errorMessage = createError(errorType,ex);
+        errorMessage.setMessage(errorType.getMessage());
+
+        return new ResponseEntity(errorMessage, httpStatus);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         ErrorType errorType = ErrorType.PARAMETER_NOT_VALID;

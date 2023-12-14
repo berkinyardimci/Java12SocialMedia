@@ -36,8 +36,9 @@ ext {
             springCloudCircuitBreaker: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:$versions.circuirBreaker",
             springCloudCircuitReactor: "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j:$versions.circuirBreaker",
 
+            springBootMailSender: "org.springframework.boot:spring-boot-starter-mail:$versions.springBoot",
 
-
+            springBootDataRedis: "org.springframework.boot:spring-boot-starter-data-redis:$versions.springBoot",
 
 
     ]

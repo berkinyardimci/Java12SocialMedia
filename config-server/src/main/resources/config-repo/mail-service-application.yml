@@ -1,0 +1,29 @@
+server:
+  port: 9093
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: password
+
+  zipkin:
+    enabled: true
+    base-url: http://localhost:9411
+    service:
+      name: mail-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: berkinyardimci98@gmail.com
+    password: rtmg xpyy toyc pmxm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+rabbitmq:
+  mail-queue: mailQueue

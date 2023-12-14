@@ -12,8 +12,10 @@ import com.socialmedia.rabbitmq.model.RegisterModel;
 import com.socialmedia.repository.IUserRepository;
 import com.socialmedia.util.JWTTokenManager;
 import com.socialmedia.util.ServiceManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +45,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
             throw new UserManagerException(ErrorType.USER_NOT_FOUND);
         }
         userProfile.get().setStatus(EStatus.ACTIVE);
+
         update(userProfile.get());
         return "Hesap başarıyla aktive edilmiştir";
     }
@@ -84,5 +87,21 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
             UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(registerModel);
             save(userProfile);
             System.out.println(userProfile);
+    }
+
+    @Cacheable(value = "userprofilebyUsername",key = "#username.toLowerCase()")
+    public UserProfile findByUsername(String username) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return userRepository.findByUsername(username.toLowerCase()).orElseThrow(() -> new UserManagerException(ErrorType.USER_NOT_FOUND));
+    }
+
+    @Cacheable(value = "findbystatus")//ACTIVE, ASTIVE
+    public List<UserProfile> findByStatus(EStatus status) {
+        List<UserProfile> list =  userRepository.findByStatus(status);
+        return list;
     }
 }

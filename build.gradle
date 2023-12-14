@@ -55,6 +55,7 @@ allprojects {
         implementation libs.springCloudSleuth
 
         implementation libs.springBootRabbitMq
+        implementation libs.springBootDataRedis
 
     }
 }
