@@ -14,28 +14,38 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    @Value("${rabbitmq.auth-exchange}")
-    private String exchange;
+    @Value("${rabbitmq.user-exchange}")
+    private String userExchange;
 
     @Value("${rabbitmq.register-queue}")
     private String registerQueueName;
 
-    @Value("${rabbitmq.register-bindingKey}")
-    private String registerBindingKey;
 
-    @Bean
-    DirectExchange exchangeAuth(){
-        return new DirectExchange(exchange);
-    }
+    @Value("${rabbitmq.register-elastic-queue}")
+    private String registerElasticQueueName;
+
+    @Value("${rabbitmq.register-elastic-bindingKey}")
+    private String registerElasticBindingKey;
+
     @Bean
     Queue registerQueue(){
         return new Queue(registerQueueName);
     }
+    @Bean
+    DirectExchange exchange(){
+        return new DirectExchange(userExchange);
+    }
 
     @Bean
-    public Binding bindingRegister(Queue registerQueue, DirectExchange exchangeAuth){
-        return BindingBuilder.bind(registerQueue).to(exchangeAuth).with(registerBindingKey);
+    Queue registerElasticQueueName(){
+        return new Queue(registerElasticQueueName);
     }
+
+    @Bean
+    public Binding bindingElasticRegister(Queue registerElasticQueueName, DirectExchange exchange){
+        return BindingBuilder.bind(registerElasticQueueName).to(exchange).with(registerElasticBindingKey);
+    }
+
 
     /*
     @Bean

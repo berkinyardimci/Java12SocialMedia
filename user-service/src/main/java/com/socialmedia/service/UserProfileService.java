@@ -2,6 +2,7 @@ package com.socialmedia.service;
 
 import com.socialmedia.dto.request.UserUpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
+import com.socialmedia.dto.response.UserProfileResponseDto;
 import com.socialmedia.entity.UserProfile;
 import com.socialmedia.entity.enums.EStatus;
 import com.socialmedia.excepiton.ErrorType;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserProfileService extends ServiceManager<UserProfile, Long> {
@@ -86,6 +88,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     public void createNewUserWithRabbit(RegisterModel registerModel) {
             UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(registerModel);
             save(userProfile);
+            //elastige göndercez
             System.out.println(userProfile);
     }
 
@@ -103,5 +106,13 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     public List<UserProfile> findByStatus(EStatus status) {
         List<UserProfile> list =  userRepository.findByStatus(status);
         return list;
+    }
+
+    public List<UserProfileResponseDto> findAllForElasticService() {
+        return userRepository.findAll()
+                .stream()
+                .map(x-> IUserMapper.INSTANCE.toUserProfileResponseDto(x))
+                .collect(Collectors.toList());
+
     }
 }

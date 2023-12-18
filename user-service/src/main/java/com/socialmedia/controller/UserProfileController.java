@@ -2,6 +2,7 @@ package com.socialmedia.controller;
 
 import com.socialmedia.dto.request.UserUpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
+import com.socialmedia.dto.response.UserProfileResponseDto;
 import com.socialmedia.entity.UserProfile;
 import com.socialmedia.entity.enums.EStatus;
 import com.socialmedia.service.UserProfileService;
@@ -53,5 +54,10 @@ public class UserProfileController {
     @GetMapping("/findbystatus")
     public ResponseEntity<List<UserProfile>> findByStatus(@RequestParam EStatus status){
         return ResponseEntity.ok(userProfileService.findByStatus(status));
+    }
+
+    @GetMapping("/findall/forelastic")
+    public ResponseEntity<List<UserProfileResponseDto>> findAllForElasticService(){
+        return ResponseEntity.ok(userProfileService.findAllForElasticService());
     }
 }
