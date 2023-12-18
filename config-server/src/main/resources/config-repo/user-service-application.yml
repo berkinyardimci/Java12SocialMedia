@@ -35,9 +35,12 @@ jwt:
   issuer: ${java12issuer}
 
 rabbitmq:
-  auth-exchange: authExchange
   register-queue: registerQueue
   register-bindingKey: registerBindingKey
 
   active-status-queue: activeStatusQueue
   active-status-bindingKey: activeStatusBindingKey
+
+  register-elastic-queue: registerElasticQueue
+  register-elastic-bindingKey: registerElasticBindingKey
+  user-exchange: exchangeUser

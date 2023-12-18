@@ -15,3 +15,6 @@ spring:
     service:
       name: elastic-service
 
+rabbitmq:
+  register-elastic-queue: registerElasticQueue
+

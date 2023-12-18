@@ -4,6 +4,7 @@ import com.socialmedia.dto.request.UpdateRequestDto;
 import com.socialmedia.dto.request.UserSaveRequestDto;
 import com.socialmedia.dto.response.UserProfileResponseDto;
 import com.socialmedia.entity.UserProfile;
+import com.socialmedia.rabbitmq.model.RegisterElasticModel;
 import com.socialmedia.rabbitmq.model.RegisterModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,5 +25,8 @@ public interface IUserMapper {
 
     @Mapping(source = "id", target = "userProfileId")
     UserProfileResponseDto toUserProfileResponseDto(UserProfile userProfile);
+
+    @Mapping(source = "id",target = "userProfileId")
+    RegisterElasticModel toRegisterElasticModel(UserProfile userProfile);
 }
 

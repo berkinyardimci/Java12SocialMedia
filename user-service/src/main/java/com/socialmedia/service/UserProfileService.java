@@ -10,6 +10,7 @@ import com.socialmedia.excepiton.UserManagerException;
 import com.socialmedia.manager.IAuthManager;
 import com.socialmedia.mapper.IUserMapper;
 import com.socialmedia.rabbitmq.model.RegisterModel;
+import com.socialmedia.rabbitmq.producer.RegisterElasticProducer;
 import com.socialmedia.repository.IUserRepository;
 import com.socialmedia.util.JWTTokenManager;
 import com.socialmedia.util.ServiceManager;
@@ -27,12 +28,14 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     private final JWTTokenManager tokenManager;
 
     private final IAuthManager authManager;
+    private final RegisterElasticProducer registerElasticProducer;
 
-    public UserProfileService(IUserRepository userRepository, JWTTokenManager tokenManager, IAuthManager authManager) {
+    public UserProfileService(IUserRepository userRepository, JWTTokenManager tokenManager, IAuthManager authManager, RegisterElasticProducer registerElasticProducer) {
         super(userRepository);
         this.userRepository = userRepository;
         this.tokenManager = tokenManager;
         this.authManager = authManager;
+        this.registerElasticProducer = registerElasticProducer;
     }
 
     public Boolean createNewUser(UserSaveRequestDto dto) {
@@ -88,7 +91,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
     public void createNewUserWithRabbit(RegisterModel registerModel) {
             UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(registerModel);
             save(userProfile);
-            //elastige göndercez
+            registerElasticProducer.sendNewUser(IUserMapper.INSTANCE.toRegisterElasticModel(userProfile));
             System.out.println(userProfile);
     }
 

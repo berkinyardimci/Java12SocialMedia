@@ -2,6 +2,7 @@ package com.socialmedia.mapper;
 
 import com.socialmedia.dto.response.UserProfileResponseDto;
 import com.socialmedia.entity.UserProfile;
+import com.socialmedia.rabbitmq.model.RegisterElasticModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -14,4 +15,6 @@ public interface IUserMapper {
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
 
     List<UserProfile> toUserProfile(List<UserProfileResponseDto> list);
+
+    UserProfile toUserProfile(RegisterElasticModel registerElasticModel);
 }
