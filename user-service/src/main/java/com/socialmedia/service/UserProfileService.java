@@ -15,14 +15,16 @@ import com.socialmedia.repository.IUserRepository;
 import com.socialmedia.util.JWTTokenManager;
 import com.socialmedia.util.ServiceManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserProfileService extends ServiceManager<UserProfile, Long> {
+public class UserProfileService extends ServiceManager<UserProfile, String> {
 
     private final IUserRepository userRepository;
     private final JWTTokenManager tokenManager;
@@ -79,7 +81,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         update(userProfile);
         return "Güncelleme Başarılı";
     }
-
+    /*
     public Long getUserIdfromToken(String token) {
         Long authId = tokenManager.getIdFromToken(token).orElseThrow(() -> new UserManagerException(ErrorType.INVALID_TOKEN));
 
@@ -87,6 +89,7 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
         UserProfile userProfile = optionalUserProfile.orElseThrow(() -> new UserManagerException(ErrorType.USER_NOT_FOUND));
         return userProfile.getId();
     }
+     */
 
     public void createNewUserWithRabbit(RegisterModel registerModel) {
             UserProfile userProfile = IUserMapper.INSTANCE.toUserProfile(registerModel);
@@ -117,5 +120,17 @@ public class UserProfileService extends ServiceManager<UserProfile, Long> {
                 .map(x-> IUserMapper.INSTANCE.toUserProfileResponseDto(x))
                 .collect(Collectors.toList());
 
+    }
+
+    public Page<UserProfile> findAllByPageable(int pageSize, int pageNumber,  String direction, String sortParameter) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction),sortParameter);
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        return userRepository.findAll(pageable);
+    }
+
+    public Slice<UserProfile> findAllBySlice(int pageSize, int pageNumber, String direction, String sortParameter) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction),sortParameter);
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        return userRepository.findAll(pageable);
     }
 }

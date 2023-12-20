@@ -23,10 +23,10 @@ public interface IUserMapper {
     UpdateRequestDto toUpdateRequestDto(UserProfile userProfile);
 
 
-    @Mapping(source = "id", target = "userProfileId")
+    //@Mapping(source = "id", target = "userProfileId")
     UserProfileResponseDto toUserProfileResponseDto(UserProfile userProfile);
 
-    @Mapping(source = "id",target = "userProfileId")
+    //@Mapping(source = "id",target = "userProfileId")
     RegisterElasticModel toRegisterElasticModel(UserProfile userProfile);
 }
 

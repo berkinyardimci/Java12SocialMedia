@@ -18,8 +18,6 @@ public class UserProfile {
     @Id
     private String id;
 
-    private Long userProfileId;
-
     private Long authId;
 
     private String username;

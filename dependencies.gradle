@@ -41,6 +41,8 @@ ext {
             springBootDataRedis: "org.springframework.boot:spring-boot-starter-data-redis:$versions.springBoot",
             springBootElasticSearch: "org.springframework.boot:spring-boot-starter-data-elasticsearch:$versions.springBoot",
 
+            springBootDataMongo:"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
+
 
     ]
 }

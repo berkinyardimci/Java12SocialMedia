@@ -34,7 +34,7 @@ spring:
 
 jwt:
   secretKey: ${java12secret}
-  issuer: ${java12issuer}
+  issuer:  ${java12issuer}
 
 rabbitmq:
   auth-exchange: authExchange

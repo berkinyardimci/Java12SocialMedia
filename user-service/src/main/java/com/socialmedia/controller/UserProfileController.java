@@ -7,6 +7,8 @@ import com.socialmedia.entity.UserProfile;
 import com.socialmedia.entity.enums.EStatus;
 import com.socialmedia.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +43,12 @@ public class UserProfileController {
         return  ResponseEntity.ok(userProfileService.findAll());
     }
 
+    /*
     @GetMapping("/getUserIdfromToken/{token}")
     public Long getUserIdfromToken(@PathVariable String token){
         return  userProfileService.getUserIdfromToken(token);
     }
+     */
 
     @GetMapping("/findByUserName/{username}")
     public ResponseEntity<UserProfile> findByUserName(@PathVariable String username){
@@ -59,5 +63,14 @@ public class UserProfileController {
     @GetMapping("/findall/forelastic")
     public ResponseEntity<List<UserProfileResponseDto>> findAllForElasticService(){
         return ResponseEntity.ok(userProfileService.findAllForElasticService());
+    }
+    @GetMapping("/findallbypageable")
+    public ResponseEntity<Page<UserProfile>> findAllByPageable(int pageSize, int pageNumber,@RequestParam(required = false, defaultValue = "ASC") String direction, @RequestParam(required = false, defaultValue = "id")  String sortParameter){
+        return ResponseEntity.ok(userProfileService.findAllByPageable(pageSize,pageNumber,direction,sortParameter));
+    }
+
+    @GetMapping("/findallbyslice")
+    public ResponseEntity<Slice<UserProfile>> findAllBySlice(int pageSize, int pageNumber, @RequestParam(required = false, defaultValue = "ASC") String direction, @RequestParam(required = false, defaultValue = "id")  String sortParameter){
+        return ResponseEntity.ok(userProfileService.findAllBySlice(pageSize,pageNumber,direction,sortParameter));
     }
 }

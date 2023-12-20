@@ -5,20 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
+@Document
 public class UserProfile implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Long authId;
 
@@ -30,6 +30,5 @@ public class UserProfile implements Serializable {
     private String about;
 
     @Builder.Default
-    @Enumerated(EnumType.STRING)
     private EStatus status = EStatus.PENDING;
 }

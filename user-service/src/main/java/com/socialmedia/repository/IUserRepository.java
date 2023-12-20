@@ -2,15 +2,14 @@ package com.socialmedia.repository;
 
 import com.socialmedia.entity.UserProfile;
 import com.socialmedia.entity.enums.EStatus;
-import org.mapstruct.control.MappingControl;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IUserRepository extends JpaRepository<UserProfile,Long> {
+public interface IUserRepository extends MongoRepository<UserProfile,String> {
 
 
     Optional<UserProfile> findByAuthId(Long id);
