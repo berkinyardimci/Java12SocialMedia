@@ -14,8 +14,5 @@ public class UserServiceApplication {
 
         SpringApplication.run(UserServiceApplication.class);
 
-        //findbyusername metodu yazalım username değerine göre bize userprofile dönsün chache atalım
-
-        //findbyStatus
     }
 }

@@ -8,4 +8,5 @@ buildscript {
 dependencies {
     implementation libs.postgres
     implementation libs.springBootJpa
+    implementation libs.springBootSecurity
 }

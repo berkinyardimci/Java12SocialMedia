@@ -43,6 +43,8 @@ ext {
 
             springBootDataMongo:"org.springframework.boot:spring-boot-starter-data-mongodb:$versions.springBoot",
 
+            springBootSecurity: "org.springframework.boot:spring-boot-starter-security:$versions.springBoot",
+
 
     ]
 }
